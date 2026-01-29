@@ -1,0 +1,2299 @@
+/* =========================================
+   1. GLOBAL SETUP & WINDOWS CENTERING
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #000; /* Hitam pekat background luar */
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden; /* Kunci scroll di awal */
+    
+    /* LOGIC TENGAH DI WINDOWS */
+    display: flex;
+    justify-content: center; /* Tengahkan Mobile Container secara Horizontal */
+    align-items: flex-start; /* Mulai dari atas */
+}
+
+/* =========================================
+   2. MOBILE CONTAINER (Wadah HP)
+   ========================================= */
+.mobile-container {
+    width: 100%;
+    max-width: 480px; /* Lebar maksimal simulasi HP */
+    height: 100%;     /* Tinggi mengikuti body */
+    background-color: #000;
+    position: relative;
+    box-shadow: 0 0 50px rgba(20, 20, 20, 0.5); /* Bayangan halus di pinggir */
+    overflow-x: hidden !important ; /* Scroll terjadi di dalam container ini */
+    
+    /* Sembunyikan scrollbar default biar rapi */
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+}
+
+.mobile-container::-webkit-scrollbar { 
+    display: none; 
+}
+
+/* =========================================
+   3. HALAMAN 1: COVER SCREEN (PROFIL)
+   ========================================= */
+.cover-screen {
+    width: 100%;
+    height: 100vh; /* Pas 1 Layar */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Konten Vertikal di Tengah */
+    align-items: center;     /* Konten Horizontal di Tengah */
+    text-align: center;
+    position: relative;
+    z-index: 20;
+    background-color: #000;
+}
+
+/* Typography Cover */
+.logo-wedding { margin-bottom: 40px; }
+
+.the-text {
+    font-family: 'Bebas Neue', cursive;
+    color: #E50914;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-bottom: -10px;
+}
+
+.wedding-text {
+    font-family: 'Bebas Neue', cursive;
+    color: #E50914;
+    font-size: 5rem; /* Sedikit dikecilkan agar aman di HP */
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.names {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: #f0f0f0;
+}
+
+/* Profile Cards */
+.profile-selection {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+    justify-content: center;
+}
+
+.profile-card {
+    width: 110px;
+    height: 110px;
+    border-radius: 10px;
+    position: relative;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid transparent;
+}
+
+.profile-card:hover .profile-name {
+    color: white;
+    font-weight: bold;
+}
+
+.profile-name {
+    position: absolute;
+    bottom: -30px;
+    color: #808080;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.profile-andy { background-color: #005c97; }
+.profile-zhea { background-color: #e43b79; }
+
+/* Wajah & Animasi */
+.face-icon {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.eye {
+    position: absolute;
+    top: 30%;
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+}
+.eye-left { left: 17%; }
+.eye-right { right: 17%; }
+
+.mouth {
+    position: absolute;
+    bottom: 5%; 
+    width: 100px; 
+    height: auto;
+    z-index: 2;
+    
+    /* Kita set anchor point default di tengah elemen */
+    transform: translateX(-50%);
+}
+
+/* --- MULUT KIRI (ANDY) --- */
+#mouth-left {
+    left: 36%; /* Posisi Awal */
+    /* Animasi: Andy bergerak ke Kanan (menuju tengah) */
+    animation: andy-move 2s infinite ease-in-out;
+}
+
+/* --- MULUT KANAN (ZHEA) --- */
+#mouth-right {
+    left: 62%; /* Posisi Awal */
+    /* Animasi: Zhea bergerak ke Kiri (menuju tengah) */
+    animation: zhea-move 2s infinite ease-in-out;
+}
+
+
+/* --- KEYFRAMES (PERBAIKAN LOGIKA) --- */
+
+/* 1. Animasi Andy (Kiri -> Tengah) */
+/* Dia butuh geser ke KANAN, jadi angkanya harus naik */
+@keyframes andy-move {
+    0%, 100% { 
+        transform: translateX(-50%); /* Posisi Diam */
+    }
+    50% { 
+        /* Geser ke kanan 30px dari titik tengah */
+        transform: translateX(calc(-70% + 30px)); 
+    } 
+}
+
+/* 2. Animasi Zhea (Kanan -> Tengah) */
+/* Dia butuh geser ke KIRI, jadi angkanya harus turun/minus */
+@keyframes zhea-move {
+    0%, 100% { 
+        transform: translateX(-50%); /* Posisi Diam */
+    }
+    50% { 
+        /* Geser ke kiri 30px dari titik tengah */
+        transform: translateX(calc(-30% - 30px)); 
+    } 
+}
+/* Info Tamu & Tombol */
+.guest-info {
+    margin-bottom: 30px;
+    font-size: 1rem;
+    color: #a3a3a3;
+}
+.guest-name {
+    font-weight: bold;
+    color: #e50914;
+    margin-top: 5px;
+    font-size: 1.4rem;
+}
+.note {
+    font-size: 0.8rem;
+    margin-top: 10px;
+    font-style: italic;
+    color: #6d6d6e;
+}
+
+.open-invitation-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s, background-color 0.2s;
+}
+.open-invitation-btn:hover {
+    background-color: #e50914;
+    transform: scale(1.05);
+}
+
+/* =========================================
+   4. HALAMAN 2: HERO MOVIE (DETAIL)
+   ========================================= */
+.main-invitation-content {
+    display: block; /* Selalu block, kita mainkan scroll */
+    width: 100%;
+}
+
+.hero-movie {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh; /* Pas 1 Layar */
+    display: flex;
+    align-items: flex-end; /* Konten di Bawah */
+    padding-bottom: 30px;
+    z-index: 10;
+    overflow: hidden !important;
+}
+
+/* Background Image Logic (Fixed di Tengah) */
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Logic tengah */
+    width: 100%;
+    max-width: 480px; /* Samakan dengan Container */
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bg-img {
+    width: auto;
+    height: 100%; /* Sesuai request (Opsi 3) */
+    max-width: none;
+    object-fit: cover;
+    background-color: #000;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: -90px;
+}
+
+.gradient-vignette {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, #000 10%, rgba(0,0,0,0.8) 30%, transparent 100%);
+}
+
+/* Konten Halaman 2 */
+.content-wrapper {
+    position: relative;
+    z-index: 10;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.mini-tag { 
+    position: absolute; /* Supaya bisa digeser bebas */
+    top: -70px;  /* Posisi vertikal (atur naik turun di sini) */
+    font-size: 0.9rem; 
+    letter-spacing: 2px; 
+    color: #e50914;
+    font-weight: bold; 
+    left: 100px;
+}
+
+.main-title { 
+    position: absolute; /* Supaya bisa digeser bebas */
+    top: -50px;  /* Posisi vertikal (atur naik turun di sini) */
+    font-family: 'Bebas Neue', cursive; 
+    font-size: 4.5rem; 
+    color: #e50914;
+    line-height: 0.9; 
+    margin-bottom: 0px; 
+}
+
+
+.couple-names { font-family: 'Bebas Neue', cursive; 
+    font-size: 2.5rem; 
+    color: white; 
+    letter-spacing: 3px; 
+    margin-bottom: 15px; 
+}
+
+.info-meta { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin-bottom: 15px; 
+    font-size: 0.9rem;
+}
+
+.badge-coming-soon { 
+    background-color: #e50914; 
+    color: white; 
+    padding: 3px 6px;
+    border-radius: 2px;
+    font-weight: bold; 
+    font-size: 0.8rem; 
+    border-radius: 5px;
+}
+
+.synopsis {
+    /* Samakan font-nya agar serasi, atau bisa pakai sans-serif jika mau beda */
+    font-family:sans-serif;
+    /* Rata Tengah */
+    text-align: center;
+    font-size: 0.90rem;
+    line-height: 1; 
+    color: #ccc; 
+    margin-bottom: 20px;
+    
+}
+    
+    
+.nav-menu { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+    margin-bottom: 20px;
+}
+
+.hero-nav {
+    display: flex;
+    flex-wrap: wrap; /* Biar turun ke bawah kalau layar sempit */
+    justify-content: center; /* Rata tengah */
+    gap: 10px; /* Jarak antar tombol */
+    margin-top: 30px;
+    width: 100%;
+    max-width: 800px;
+    z-index: 10;
+    position: relative;
+}
+
+.nav-pill {
+    background-color: rgba(50,50,50,0.6);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 0.45rem;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: center;
+    transition: all 0.5s ease; /* Efek transisi halus */
+}
+
+.nav-pill:hover {
+    background-color: #e50914; /* Background jadi MERAH */
+    border-color: #e50914;     /* Border jadi MERAH */
+    color: white;              /* Teks PUTIH */
+    transform: scale(1.05);    /* Sedikit membesar */
+}
+
+/* Saat tombol aktif / diklik (Active) */
+.nav-pill.active {
+    color: white;
+}
+
+
+.date-text {
+    color: white;      /* Warna Putih */
+    font-weight: bold; /* Huruf Tebal */
+    font-size: 15px;
+}
+
+/* =========================================
+   5. RESPONSIVE (HP KECIL)
+   ========================================= */
+@media (max-width: 480px) {
+    
+    /* 1. Kecilkan Judul agar tidak nabrak pinggir layar */
+    .main-title {
+        font-size: 3.5rem !important; /* Turunkan dari 4.5rem */
+        line-height: 1.1;
+        width: 100%;
+        word-wrap: break-word; /* Paksa turun baris kalau kepanjangan */
+    }
+
+    /* 2. Pastikan Wrapper tidak melebar */
+    .content-wrapper {
+        width: 100%;
+        padding: 0 15px; /* Beri jarak aman kiri-kanan */
+        box-sizing: border-box; /* Agar padding tidak menambah lebar */
+        overflow: hidden; /* Jaga-jaga */
+    }
+
+    /* 3. Pastikan Judul Pasangan aman */
+    .couple-names {
+        font-size: 2.2rem !important;
+    }
+}
+
+
+
+/* 1. Kondisi Awal (Hilang / Geser ke Kiri) */
+.reveal-item {
+    opacity: 0;
+    transform: translateX(-50px); /* Geser ke kiri sejauh 50px */
+    transition: all 0.8s ease-out; /* Animasi halus saat perubahan terjadi */
+}
+
+/* 2. Kondisi Aktif (Muncul / Posisi Normal) */
+.reveal-item.visible {
+    opacity: 1;
+    transform: translateX(0); /* Kembali ke posisi semula */
+}
+
+
+
+
+
+/* =========================================
+   6. HALAMAN 3: VIDEO SECTION
+   ========================================= */
+.video-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* Tinggi penuh lagi (Halaman ke-3) */
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    z-index: 15; /* Di atas hero movie */
+}
+
+.video-container {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+}
+
+.section-title {
+    font-family: 'Bebas Neue', cursive;
+    color: #e50914;
+    font-size: 3rem;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+/* Frame Video Rasio 16:9 */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    background: #111;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.the-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-quote {
+    font-size: 1rem;
+    color: #aaa;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+
+
+
+/* --- ANIMASI BARU: SLIDE DARI BAWAH (Reveal Up) --- */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(50px); /* Mulai dari 50px di bawah posisi normal */
+    transition: all 0.8s ease-out; /* Sama lambatnya dengan slide samping */
+}
+
+.reveal-up.visible {
+    opacity: 1;
+    transform: translateY(0); /* Meluncur ke posisi normal */
+}
+
+
+
+/* --- QURAN VERSE STYLING --- */
+.quran-verse-block {
+    margin-top: 40px; /* Jarak dari quote di atasnya */
+    text-align: left; 
+    padding: 0 10px; 
+}
+
+.verse-text {
+    font-size: 0.80rem;
+    color: #f0f0f0;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    /* Memberi sedikit penekanan visual */
+    font-style: italic; 
+}
+
+.surah-info {
+    display: flex;
+    align-items: center; /* Rata tengah vertikal */
+    gap: 5px; /* Jarak antara badge dan nomor */
+}
+
+.surah-name-badge {
+    background-color: #e50914; /* Merah Netflix */
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px; /* Sudut sedikit membulat */
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.surah-number {
+    font-size: 1rem;
+    color: white;
+    font-weight: bold;
+}
+
+
+
+/* =========================================
+   7. NEW SECTION: KEDUA MEMPELAI
+   ========================================= */
+.couple-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* Tinggi penuh lagi */
+    background-color: #000;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Konten dari atas */
+    z-index: 10;
+}
+
+/* Header "KEDUA MEMPELAI" */
+.couple-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 480px;
+    padding-left: 10px; /* Sedikit padding agar tidak terlalu mepet kiri */
+}
+
+.header-badge {
+    background-color: #e50914;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.section-title-couple {
+    font-family: 'Bebas Neue', cursive;
+    color: white;
+    font-size: 2.8rem;
+    margin: 0; /* Reset margin */
+    letter-spacing: 1px;
+}
+
+/* Wrapper Kartu Mempelai */
+.couple-cards-wrapper {
+    display: flex;
+    flex-direction: column; /* Tumpuk vertikal di awal */
+    gap: 30px;
+    width: 100%;
+    max-width: 400px; /* Lebar maksimal kartu */
+    align-items: flex-start;
+}
+
+/* Kartu Mempelai Individu */
+.couple-card {
+    justify-content: flex-start;
+    height: 100%;
+    border-radius: 10px;
+    width: 100%;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Rata kiri semua teks di dalam kartu */
+    height: 100%;
+    margin-top: 20px !important; 
+    padding-top: 0 !important;
+}
+
+.couple-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    margin: 0 0 15px 0 !important;
+    padding-top: 0 !important;
+    display: block; 
+    
+}
+
+.member-name {
+    font-family: 'Bebas Neue', cursive;
+    color: #e50914;
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.member-name .last-name {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: normal;
+}
+
+.description {
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+/* Social Icons */
+.social-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Agar bisa wrap di HP kecil */
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.social-icon {
+    width: 30px;
+    height: 30px;
+    background-color: #333;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+    /* Tambah icon dari font awesome atau background-image */
+}
+
+.social-icon:hover {
+    background-color: #e50914;
+    transform: scale(1.1);
+}
+
+
+
+/* --- DEFINISI ANIMASI BARU (GESER KIRI-KANAN) --- */
+
+/* Geser dari KIRI ke KANAN */
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-100%); /* Mulai dari luar layar kiri */
+    transition: all 0.8s ease-out;
+}
+.reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0); /* Masuk ke posisi normal */
+}
+
+/* Geser dari KANAN ke KIRI */
+.reveal-right {
+    opacity: 0;
+    transform: translateX(100%); /* Mulai dari luar layar kanan */
+    transition: all 0.8s ease-out;
+}
+.reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0); /* Masuk ke posisi normal */
+}
+
+/* MEDIA QUERIES (Untuk tampilan berdampingan di layar lebih lebar) */
+@media (min-width: 481px) {
+    .couple-cards-wrapper {
+        flex-direction: row; /* Berdampingan */
+        justify-content: center;
+        align-items: stretch;
+    }
+    .couple-card {
+        
+        align-items: flex-start;
+        padding: 0px; /* Hapus padding jika Anda hanya ingin konten sejajar */
+        margin-top: 0px;
+    }
+}
+
+
+
+
+/* =========================================
+   8. NEW SECTION: SAVE THE DATE
+   ========================================= */
+.save-the-date-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* Tinggi penuh layar */
+    background-image: url('URL_FOTO_SAVE_THE_DATE_DISINI.jpg'); /* Ganti dengan foto Anda */
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 25; /* Pastikan di atas section lainnya */
+    
+    /* Overlay gelap awal */
+    opacity: 0.8; 
+    filter: brightness(0.5); /* Awalnya agak gelap */
+    transition: all 0.5s ease-in-out; /* Animasi untuk efek menyala */
+}
+
+/* Efek Menyala saat di-hover/diklik (gunakan class .active) */
+.save-the-date-section.active {
+    opacity: 1;
+    filter: brightness(1); /* Menjadi lebih terang */
+    box-shadow: 0 0 50px rgba(229, 9, 20, 0.7); /* Efek glow merah */
+}
+
+
+.save-date-content {
+    background-color: rgba(0, 0, 0, 0.7); /* Latar belakang semi-transparan untuk kotak */
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.save-date-title {
+    font-family: 'Bebas Neue', cursive;
+    color: white;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.event-date {
+    color: #e50914;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.countdown-line {
+    width: 80%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0 auto 30px auto;
+}
+
+.countdown-timer {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    gap: 10px;
+}
+
+.time-box {
+    background-color: rgba(30, 30, 30, 0.8);
+    border-radius: 5px;
+    padding: 10px 5px;
+    flex: 1; /* Agar membagi rata */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.time-value {
+    font-family: 'Bebas Neue', cursive;
+    color: white;
+    font-size: 2.2rem;
+    display: block;
+    line-height: 1;
+}
+
+.time-label {
+    font-size: 0.7rem;
+    color: #ccc;
+    text-transform: uppercase;
+    margin-top: 5px;
+    display: block;
+}
+
+.save-date-message {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+.save-on-calendar-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    width: 100%;
+}
+
+.save-on-calendar-btn .calendar-icon {
+    width: 20px;
+    height: 20px;
+    filter: invert(100%); /* Agar ikon jadi putih */
+}
+
+.save-on-calendar-btn:hover {
+    background-color: #e50914;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+}
+
+
+
+/* =========================================
+   8. NEW SECTION: SAVE THE DATE
+   ========================================= */
+.save-the-date-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 80px;
+    z-index: 30; 
+}
+
+/* New Slide-Up Animation Class */
+.reveal-up-sdt {
+    opacity: 0;
+    transform: translateY(100px); /* Mulai lebih jauh dari bawah */
+    transition: all 1s ease-out;
+}
+.reveal-up-sdt.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Background Section */
+.sdt-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+.sdt-bg .bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.3; 
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.save-the-date-section:hover .sdt-bg .bg-img {
+    opacity: 0.8; /* Jadi Terang (Nyala) */
+}
+
+/* Countdown Box */
+.countdown-box {
+    position: relative;
+    z-index: 20;
+    background-color: rgba(244, 239, 239, 0.078); /* Translucent background (Agak gelap) */
+    backdrop-filter: blur(5px);
+    padding: 0px 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    border: 2px solid rgba(255, 253, 253, 0.1);
+    transition: box-shadow 0.5s ease-in-out;
+    margin: 0 20px;
+    top: 100px;
+}
+
+/* --- GLOW EFFECT (MENYALA) --- */
+.countdown-box:hover,
+.countdown-box.glow {
+    /* Efek menyala merah menggunakan box-shadow */
+    box-shadow: 0 0 20px #E50914, 0 0 10px rgba(255, 255, 255, 0.2); 
+}
+
+.countdown-box.glow {
+    box-shadow: 0 0 30px rgba(229, 9, 20, 0.6), inset 0 0 10px rgba(229, 9, 20, 0.2);
+    border-color: #e50914;
+}
+
+/* Countdown Text */
+.sdt-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    color: white;
+    margin-top: 20px; 
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+.sdt-date {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 15px;
+    font-weight: bold;
+    margin-bottom: 25px; 
+    font-weight: bold;
+}
+
+.sdt-divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #666, transparent);
+    margin: 15px 0;
+}
+
+/* Timer Units */
+.countdown-timer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+.timer-unit {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 10px 5px;
+    border-radius: 4px;
+    flex-grow: 1;
+    min-width: 70px;
+}
+.timer-value {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: white;
+    font-family: 'Bebas Neue', cursive;
+    line-height: 1;
+}
+.timer-label {
+    font-size: 0.7rem;
+    color: #ccc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sdt-text {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 10px; 
+    
+    line-height: 1.5;
+}
+
+.sdt-button {
+    background-color: #333;
+    color: white;
+    border: 1px solid #666;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    top: -5px; /* Geser naik 5 pixel */
+    margin-bottom: 10px;
+}
+.sdt-button:hover {
+    background-color: #e50914;
+    border-color: #e50914;
+}
+
+
+
+
+
+/* =========================================
+   9. NEW SECTION: HARI PERNIKAHAN (EVENT)
+   ========================================= */
+.event-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #000;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center Global */
+    z-index: 20;
+    overflow-x: hidden;
+}
+
+/* --- HEADER --- */
+.event-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-self: flex-start;
+}
+.event-badge {
+    background-color: #e50914;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 1px;
+}
+.event-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 3rem;
+    color: white;
+    line-height: 1;
+    margin: 0;
+}
+.event-subheader {
+    color: #ccc;
+    font-size: 1rem;
+    margin-bottom: 50px;
+    font-style: italic;
+    align-self: flex-start;
+}
+
+/* --- ROW LAYOUT (KIRI GAMBAR - KANAN TEKS) --- */
+.event-row {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 50px;
+    gap: 25px;
+    align-items: center;
+}
+
+/* Kolom Peta (Kiri) */
+.event-map {
+    flex: 0 0 130px;
+    min-width: 130px;
+    height: 270px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Kolom Detail (Kanan) */
+.event-details {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+/* Styling Detail */
+.event-label-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.event-tag.red {
+    background-color: #e50914;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.event-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+}
+
+.event-date-info {
+    color: #ddd;
+    margin-bottom: 10px;
+}
+
+.event-time {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    color: white;
+}
+.time-badge {
+    background-color: #333;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.event-location {
+    margin-bottom: 20px;
+    color: #ccc;
+    line-height: 1.5;
+}
+.event-location p { font-size: 0.85rem; color: #bbb; line-height: 1.3; margin-top: 3px;}
+
+.event-location strong {
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.btn-location {
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    padding: 6px 15px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+.btn-location:hover {
+    background-color: #e50914;
+}
+
+
+/* --- ANIMASI BARU: ZOOM IN (Kecil ke Besar) --- */
+.reveal-zoom {
+    opacity: 0;
+    transform: scale(0.5); /* Mulai dari kecil */
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efek membal sedikit (Pop) */
+}
+.reveal-zoom.visible {
+    opacity: 1;
+    transform: scale(1); /* Ukuran normal */
+}
+
+/* Animasi Kanan (Reuse/Pastikan ada) */
+.reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.8s ease-out;
+}
+.reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+
+
+/* =========================================
+   10. NEW SECTION: LOVE STORY
+   ========================================= */
+.story-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* Bisa auto kalau kontennya panjang */
+    background-color: #000;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center Layout */
+    z-index: 20;
+    overflow-x: hidden;
+}
+
+/* --- HEADER --- */
+.story-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 60px;
+    align-self: flex-start; /* Header rata kiri sesuai gambar */
+}
+.story-badge {
+    background-color: #e50914;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 1px;
+}
+.story-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 3rem;
+    color: white;
+    line-height: 1;
+    margin: 0;
+}
+
+/* --- STORY ITEM LAYOUT --- */
+.story-item {
+    display: flex;
+    flex-wrap: nowrap; 
+    flex-direction: row;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 60px; /* Jarak antar cerita */
+    gap: 25px;
+    align-items: center;
+}
+
+/* Logic Zig-Zag (Reverse) */
+/* Jika ada class .reverse, balik posisinya (Gambar Kanan, Teks Kiri) */
+.story-item.reverse {
+    flex-direction: row-reverse; 
+    text-align: right; /* Opsional: Teks rata kanan biar variatif */
+}
+
+.story-item.reverse .story-content {
+    align-items: flex-end;
+}
+.story-item.reverse .story-tag-box {
+    flex-direction: row-reverse;
+}
+/* Tapi khusus di Mobile, kembalikan tumpukan normal (Gambar atas, Teks bawah) */
+
+
+
+/* --- GAMBAR --- */
+.story-img-box {
+    flex: 0 0 130px;
+    min-width: 130px;
+    position: relative;
+}
+.story-img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    display: block;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+}
+
+/* --- KONTEN TEKS --- */
+.story-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Khusus item reverse, kita align item ke kanan (desktop only) */
+@media (min-width: 769px) {
+    .story-item.reverse .story-content {
+        align-items: flex-end; /* Item rata kanan */
+    }
+    .story-item.reverse .story-tag-box {
+        flex-direction: row-reverse; /* Tag dibalik urutannya */
+    }
+}
+
+
+.story-tag-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.story-tag.red {
+    background-color: #e50914;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+.story-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+.story-date {
+    font-style: italic;
+    color: #e50914; /* Merah atau Putih */
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.story-desc {
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 0.85rem;
+}
+
+/* Animasi Reveal Left (Pastikan sudah ada di CSS sebelumnya, kalau belum tambahkan ini) */
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.8s ease-out;
+}
+.reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+
+
+
+/* =========================================
+   11. NEW SECTION: WEDDING GALLERY
+   ========================================= */
+.gallery-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #000;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    z-index: 20;
+    overflow-x: hidden;
+}
+
+/* --- HEADER (Sama seperti Story Header) --- */
+.gallery-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 60px;
+    align-self: flex-start; 
+}
+.gallery-badge {
+    background-color: #e50914;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 1px;
+}
+.gallery-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 3rem;
+    color: white;
+    line-height: 1;
+    margin: 0;
+}
+
+/* --- GALLERY GRID (Layout Kotak-kotak) --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px); /* Sedikit naik saat hover */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 350px; /* Tinggi foto standar */
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+/* --- OVERLAY GELAP SAAT HOVER --- */
+.gallery-item .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0); /* Awalnya transparan */
+    transition: background-color 0.3s ease;
+}
+
+.gallery-item:hover .overlay {
+    background-color: rgba(0, 0, 0, 0.4); /* Menjadi gelap saat hover */
+}
+
+
+/* --- LIGHTBOX (Pop-up Gambar Besar) --- */
+.lightbox {
+    display: none; /* Sembunyikan secara default */
+    position: fixed; /* Tetap di atas semua */
+    z-index: 9999 !important; /* Paling atas */
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9); /* Background gelap */
+    backdrop-filter: blur(5px);
+}
+
+.lightbox-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 10px;
+    object-fit: contain; /* Agar gambar tidak terpotong */
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #e50914;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.gallery-item:first-child {
+    /* Memerintahkan item ini melebar dari garis kolom 1 sampai garis terakhir (-1) */
+    grid-column: 1 / -1;
+}
+
+.gallery-item:first-child img {
+    /* Opsional: Atur tinggi khusus untuk foto landscape ini agar tidak terlalu gepeng */
+    height: 250px; /* Sedikit lebih tinggi dari thumbnail biasa (200px) */
+}
+
+.gallery-item:last-child {
+    grid-column: 1 / -1; /* Memaksa melebar penuh (kiri ke kanan) */
+    width: 100%;
+}
+
+/* Opsional: Biar tinggi foto terakhir juga pas (landscape) */
+.gallery-item:last-child img {
+    height: 250px; /* Samakan dengan tinggi foto landscape pertama */
+    object-fit: cover;
+}
+
+
+
+
+/* =========================================
+   12. NEW SECTION: WEDDING GIFT
+   ========================================= */
+.gift-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #000;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Rata Kiri sesuai gambar */
+    z-index: 20;
+    overflow-x: hidden;
+    color: white;
+}
+
+/* --- HEADER --- */
+.gift-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.gift-badge {
+    background-color: #e50914;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 1px;
+}
+.gift-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 3rem;
+    color: white;
+    line-height: 1;
+    margin: 0;
+}
+
+/* --- DESKRIPSI --- */
+.gift-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #ddd;
+    margin-bottom: 30px;
+    max-width: 600px; /* Biar ga terlalu panjang ke samping */
+}
+
+/* --- ICON KADO MERAH (ANIMASI KIRI KE KANAN) --- */
+.gift-icon-wrapper {
+    margin-bottom: 30px;
+}
+.gift-icon-box {
+    width: 60px;
+    height: 60px;
+    background-color: #e50914; /* Kotak Merah */
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(229, 9, 20, 0.3);
+}
+
+/* --- ALAMAT --- */
+.gift-address-box {
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 600px;
+}
+.address-label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.receiver-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #e50914; /* Merah */
+    margin-bottom: 5px;
+}
+.address-text {
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.5;
+}
+
+/* --- TOMBOL --- */
+.gift-buttons {
+    display: flex;
+    flex-direction: column; /* Tumpuk di HP */
+    gap: 15px;
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 30px;
+}
+
+.btn-gift {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Teks rata kiri di dalam tombol */
+    gap: 15px;
+    background-color: #222; /* Dark Grey */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-gift:hover {
+    background-color: #333;
+    border-color: #555;
+}
+.btn-gift .icon {
+    font-size: 1.2rem;
+}
+
+
+/* --- BANK CONTAINER (Hidden/Show) --- */
+.bank-container {
+    width: 100%;
+    max-width: 350px;
+    background-color: #111;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #333;
+    
+    /* Logic Sembunyi */
+    display: none; /* Default hilang */
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Class untuk memunculkan bank */
+.bank-container.show {
+    display: block;
+    /* Kita pakai animation keyframe di JS atau transisi opacity */
+    animation: fadeInDown 0.5s forwards;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Bank Card Style */
+.bank-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    color: black;
+}
+.bank-card:last-child { margin-bottom: 0; }
+
+.bank-logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    width: auto;
+    min-width: 70px;
+    color: #e50914;
+}
+.bank-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+}
+.bank-number { font-weight: bold; font-size: 1.1rem; }
+.bank-owner { font-size: 0.75rem; color: #555; }
+
+.btn-copy {
+    background-color: #e50914;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+.btn-copy:active { background-color: #b2070f; }
+
+/* ANIMASI REVEAL ZOOM (Sudah ada, tapi pastikan ini) */
+.reveal-zoom { opacity: 0; transform: scale(0.8); transition: all 0.8s ease-out; }
+.reveal-zoom.visible { opacity: 1; transform: scale(1); }
+
+/* ANIMASI REVEAL LEFT (Sudah ada, tapi pastikan ini) */
+.reveal-left { opacity: 0; transform: translateX(-50px); transition: all 0.8s ease-out; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+
+/* =========================================
+   13. NEW SECTION: WEDDING WISH
+   ========================================= */
+.wishes-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #000;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Header rata kiri */
+    z-index: 20;
+    color: white;
+}
+
+/* --- HEADER --- */
+.wishes-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.wishes-badge {
+    background-color: #e50914;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 1px;
+}
+.wishes-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 3rem;
+    color: white;
+    line-height: 1;
+    margin: 0;
+}
+
+/* --- SUBTITLE & DESC --- */
+.wishes-intro {
+    margin-bottom: 30px;
+    max-width: 600px;
+}
+.wishes-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+.highlight-red {
+    background-color: #e50914;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.wishes-desc {
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.5;
+}
+
+/* --- FORM CONTAINER (KOTAK GELAP) --- */
+.wishes-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: #1a1a1a; /* Abu-abu gelap sesuai gambar */
+    border-radius: 10px;
+    overflow: hidden; /* Biar sudut tumpul */
+    border: 1px solid #333;
+    margin-bottom: 50px;
+}
+
+.wishes-count-header {
+    background-color: #222;
+    padding: 15px 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wishes-form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Input Styles */
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: white; /* Input Putih */
+    color: #333;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+}
+.form-input:focus {
+    box-shadow: 0 0 0 2px #e50914;
+}
+
+/* Textarea khusus */
+.form-input.textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Footer Form (Counter & Button) */
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.char-limit {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.btn-send {
+    background-color: #e50914;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-send:hover {
+    background-color: #b2070f;
+}
+
+/* --- STYLE UNTUK LIST UCAPAN (YANG AKAN MUNCUL) --- */
+.wishes-list {
+    margin-top: 30px;
+    max-height: 400px; /* Batasi tinggi biar bisa discroll */
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Scrollbar tipis ala Netflix */
+.wishes-list::-webkit-scrollbar { width: 5px; }
+.wishes-list::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
+
+/* Kartu Ucapan */
+.wish-card {
+    background-color: #1f1f1f; /* Abu gelap */
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 3px solid #e50914; /* Garis merah di kiri */
+    animation: fadeIn 0.5s ease;
+}
+
+.wish-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.wish-name {
+    font-weight: bold;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.wish-date {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.wish-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background-color: #333;
+    color: #ccc;
+    margin-bottom: 8px;
+}
+
+.wish-message {
+    font-size: 0.95rem;
+    color: #ddd;
+    line-height: 1.4;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- FOOTER COPYRIGHT --- */
+.footer-copyright {
+    margin-top: auto;
+    width: 100%;
+    text-align: center;
+    padding-top: 40px;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+
+
+
+/* =========================================
+   14. NEW SECTION: CLOSING
+   ========================================= */
+.closing-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 20px 50px;
+    z-index: 20;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+}
+
+/* Background Image Full & Gelap */
+.closing-bg-wrapper {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+}
+.closing-bg-img {
+    width: 100%; height: 100%; object-fit: cover;
+}
+.closing-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Gelap banget biar tulisan baca */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.9));
+}
+
+.closing-content {
+    position: relative; z-index: 2; width: 100%; max-width: 800px;
+}
+
+/* --- HEADER --- */
+.the-text {
+    font-family: 'Bebas Neue', cursive; font-size: 1.5rem; letter-spacing: 2px;
+    color: #e50914; display: block; margin-bottom: -10px;
+}
+.closing-title {
+    font-family: 'Bebas Neue', cursive; font-size: 5rem; line-height: 1;
+    margin: 0; color: #e50914; text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+.closing-names {
+    font-family: 'Bebas Neue', cursive; font-size: 3rem; color: white;
+    margin-top: 5px; margin-bottom: 40px;
+}
+
+/* --- MESSAGE --- */
+.closing-message-box { margin-bottom: 50px; }
+.thank-badge {
+    background-color: #e50914; padding: 5px 15px; border-radius: 5px;
+    font-weight: bold; text-transform: uppercase; margin-right: 5px;
+}
+.thank-subtitle { font-size: 1.1rem; font-weight: bold; }
+.thank-text {
+    font-size: 0.95rem; line-height: 1.6; margin: 20px auto;
+    max-width: 600px; color: #ddd;
+}
+.see-you { font-family: 'Bebas Neue', cursive; font-size: 1.5rem; margin-top: 20px; }
+
+/* --- FAMILY GRID --- */
+.family-grid {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;
+    margin-bottom: 50px;
+}
+.family-col { flex: 1; min-width: 250px; }
+.family-title { font-size: 1rem; font-weight: bold; margin-bottom: 5px; }
+.family-name-big {
+    font-family: 'Bebas Neue', cursive; font-size: 2rem; margin: 5px 0;
+}
+.family-name-big.red { color: #e50914; }
+.family-parents { font-size: 0.9rem; color: #ccc; line-height: 1.4; }
+
+/* --- TURUT MENGUNDANG --- */
+.inviting-badge {
+    background-color: #e50914; padding: 2px 8px; border-radius: 3px; font-weight: bold;
+}
+.inviting-list {
+    list-style: none; padding: 0; margin-top: 15px; color: #ccc; line-height: 1.6; font-size: 0.9rem;
+}
+
+/* --- SCROLL TOP BTN --- */
+.scroll-top-btn {
+    width: 40px; height: 40px; background: #333; border-radius: 5px;
+    display: flex; justify-content: center; align-items: center;
+    margin: 40px auto 0; cursor: pointer; border: 1px solid #555;
+}
+.scroll-top-btn:hover { background: #e50914; border-color: #e50914; }
+
+
+/* =========================================
+   ANIMASI KHUSUS CLOSING
+   ========================================= */
+
+/* 1. ZOOM FADE (Kecil Transparan -> Besar Jelas) - Untuk "THE WEDDING" */
+.reveal-zoom-fade {
+    opacity: 0;
+    transform: scale(0.5); /* Mulai dari kecil */
+    transition: all 1s ease-out;
+}
+.reveal-zoom-fade.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* 2. SLIDE DOWN FADE (Atas Transparan -> Bawah Jelas) - Untuk Nama */
+.reveal-slide-down {
+    opacity: 0;
+    transform: translateY(-50px); /* Mulai dari atas */
+    transition: all 1s ease-out 0.3s; /* Delay dikit biar muncul setelah judul */
+}
+.reveal-slide-down.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================================
+   15. NEW: FLOATING CONTROLS (Fixed Right Bottom)
+   ========================================= */
+.floating-controls {
+    position: fixed;
+    bottom: 30px;  /* Jarak dari bawah */
+    right: 20px;   /* Jarak dari kanan */
+    z-index: 9999; /* Di atas segalanya */
+    display: flex;
+    flex-direction: column; /* Tumpuk Atas-Bawah */
+    gap: 15px; /* Jarak antar tombol musik & scroll */
+    align-items: center;
+    
+    /* Sembunyikan dulu sebelum tombol Buka diklik (optional) */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease;
+}
+
+/* Class untuk memunculkan tombol setelah masuk undangan */
+.floating-controls.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Style Dasar Tombol Bulat */
+.float-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(20, 20, 20, 0.8); /* Hitam Transparan */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(229, 9, 20, 0.3); /* Glow Merah dikit */
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+}
+
+.float-btn:hover {
+    background-color: #e50914; /* Merah saat hover */
+    transform: scale(1.1);
+}
+
+/* --- KHUSUS TOMBOL MUSIK --- */
+.music-btn {
+    background-color: #222;
+}
+
+/* Animasi Putar (Spin) saat lagu nyala */
+.music-btn.playing .icon-music {
+    animation: spinDisc 3s linear infinite;
+}
+
+/* Keyframe Putar */
+@keyframes spinDisc {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* --- KHUSUS TOMBOL SCROLL --- */
+.scroll-btn {
+    background-color: #e50914; /* Default Merah biar keliatan aksi */
+}
+
+
+
+/* =========================================
+   ADAB WALIMAH (NETFLIX STYLE)
+   ========================================= */
+.adab-section {
+    padding: 60px 20px;
+    background-color: #000; /* Background Hitam Pekat */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    border-top: 1px solid #222; /* Garis tipis pemisah section atas */
+}
+
+/* Subtitle Kecil */
+.adab-subtitle {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 10px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* Header Container (Garis - Judul - Garis) */
+.adab-header-netflix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+/* Garis Putih Kiri Kanan */
+.header-line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #555;
+    max-width: 100px; /* Batasi panjang garis */
+}
+
+/* Wrapper Judul */
+.header-badge-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* KOTAK MERAH (ADAB) */
+.badge-box-red {
+    background-color: #e50914; /* Merah Netflix */
+    color: white;
+    padding: 5px 10px;
+    font-family: 'Bebas Neue', cursive; /* Font Judul */
+    font-size: 1.8rem;
+    border-radius: 4px;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+/* TEKS PUTIH (WALIMAH) */
+.title-text-white {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.8rem;
+    color: white;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+/* --- GRID ITEMS --- */
+.adab-grid-netflix {
+    display: grid;
+    grid-template-columns: 1fr; /* Default 1 kolom biar rapi di HP */
+    gap: 30px;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Di layar tablet/PC jadi 2 kolom */
+@media (min-width: 480px) {
+    .adab-grid-netflix {
+        grid-template-columns: 1fr 1fr; 
+    }
+}
+
+/* Item Style (Ikon Kiri - Teks Kanan) */
+.netflix-item {
+    display: flex;
+    align-items: center; /* Sejajar vertikal tengah */
+    gap: 15px;
+    text-align: left;
+}
+
+.icon-circle-netflix {
+    /* UBAH DARI 60px JADI 80px */
+    min-width: 80px; 
+    height: 80px;
+    
+    background-color: #dcd7c9; 
+    color: #141414; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; 
+}
+
+/* Lingkaran Ikon (Warna Krem/Emas Pudar seperti gambar) */
+.icon-circle-netflix img.adab-icon-img {
+    /* Kalau mau ikonnya ikut membesar sedikit, ubah jadi 32px atau 36px */
+    width: 50px;   /* Default tadi */
+    height: 50px;
+    object-fit: contain; 
+    filter: brightness(0); 
+}
+
+
+/* Teks Keterangan */
+.netflix-text {
+    font-size: 0.9rem;
+    color: #eee;
+    line-height: 1.4;
+    margin: 0;
+}
+
+
+/* --- TURUT MENGUNDANG STYLE --- */
+.inviting-box {
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #333; /* Garis tipis pemisah */
+    max-width: 90%;
+}
+
+.inviting-title {
+    font-family: 'Bebas Neue', cursive;
+    color: #e50914; /* Merah Netflix */
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.inviting-list {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.inviting-col p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* Responsif untuk HP yang sangat kecil */
+@media (max-width: 360px) {
+    .inviting-list {
+        flex-direction: column; /* Jadi memanjang ke bawah kalau layar sempit */
+    }
+}
