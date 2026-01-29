@@ -882,30 +882,53 @@
     if (guestName) { const guestElement = document.querySelector('.guest-name'); 
     if(guestElement) { guestElement.textContent = decodeURIComponent(guestName.replace(/_/g, ' ')); } }
     
+ 
+    
     // =========================================
     // FITUR UCAPAN (DATABASE PHP + WHATSAPP)
     // =========================================
 
     // 1. FUNGSI MUAT DATA (Jalan otomatis saat web dibuka)
-    
-    function sendToWhatsApp() {
-        const name = document.getElementById('senderName').value;
-        const status = document.getElementById('attendanceStatus').value;
-        const message = document.getElementById('wishMessage').value;
+    function loadWishes() {
+        // Panggil file PHP
+        fetch('wishes.php')
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById('wishesList');
+                const count = document.getElementById('totalWishes');
+                
+                // Update Angka Jumlah Ucapan
+                if(count) count.innerText = data.length;
 
-        if (name === "" || status === "" || message === "") {
-            alert("Mohon lengkapi semua data dulu ya kak!");
-            return;
-        }
+                // Kosongkan list dulu biar gak dobel
+                list.innerHTML = '';
 
-        const phoneNumber = "+6282121843880"; 
-        const text = `Halo, saya ${name} ingin konfirmasi kehadiran di acara pernikahan kalian.%0A%0A` +
-                     `• Status: ${status}%0A` +
-                     `• Ucapan: ${message}%0A%0A` +
-                     `Terima kasih, semoga lancar sampai hari H!`;
+                // Jika ada data, buat elemen HTML-nya
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        // Tentukan ikon status
+                        let statusIcon = '❓';
+                        if(item.status === 'Hadir') statusIcon = '✅';
+                        if(item.status === 'Tidak Hadir') statusIcon = '❌';
 
-        const waLink = `https://wa.me/${phoneNumber}?text=${text}`;
-        window.open(waLink, '_blank');
+                        // Masukkan ke HTML
+                        const htmlItem = `
+                            <div class="wish-card">
+                                <div class="wish-header">
+                                    <span class="wish-name">${item.nama}</span>
+                                    <span class="wish-date">${item.waktu}</span>
+                                </div>
+                                <div class="wish-badge">${statusIcon} ${item.status}</div>
+                                <p class="wish-message">"${item.ucapan}"</p>
+                            </div>
+                        `;
+                        list.innerHTML += htmlItem;
+                    });
+                } else {
+                    list.innerHTML = '<p style="text-align:center; color:#777; font-style:italic;">Belum ada ucapan. Jadilah yang pertama!</p>';
+                }
+            })
+            .catch(err => console.error("Gagal memuat ucapan:", err));
     }
 
     // Jalankan fungsi load saat halaman siap
@@ -950,14 +973,12 @@
             btn.innerText = originalText;
             btn.disabled = false;
 
-            // 4. LANJUT KIRIM KE WHATSAPP (Sesuai request awal)
-            // Ganti nomor WA Client di sini (Format 628...)
-            const phoneNumber = "6281234567890"; 
+            // 4. LANJUT KIRIM KE WHATSAPP
+            const phoneNumber = "6282121843880"; // Nomor Mas
             
             const waText = `Halo, saya *${name}* (%20${status}%20).%0AUcapan: ${message}`;
             const waLink = `https://wa.me/${phoneNumber}?text=${waText}`;
             
-            // Konfirmasi ke user
             if(confirm("Ucapan berhasil disimpan di Web! \nApakah ingin mengirim notifikasi ke WhatsApp pengantin juga?")) {
                 window.open(waLink, '_blank');
             }
@@ -1012,4 +1033,5 @@
 
 </script>
 </body>
+
 </html>
