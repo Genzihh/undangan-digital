@@ -482,7 +482,7 @@
                 <div class="form-footer">
                     <span class="char-limit">Maksimal 300 karakter</span>
                     
-                    <button type="button" class="btn-send" onclick="sendToWhatsApp()">Kirim ke WhatsApp</button>
+                    <button type="button" class="btn-send" onclick="sendWish()">Kirim</button>
                 </div>
             </form>
 
@@ -974,7 +974,7 @@
             btn.disabled = false;
 
             // 4. LANJUT KIRIM KE WHATSAPP
-            const phoneNumber = "6282121843880"; // Nomor Mas
+            const phoneNumber = "6285966390439"; // Nomor Mas
             
             const waText = `Halo, saya *${name}* (%20${status}%20).%0AUcapan: ${message}`;
             const waLink = `https://wa.me/${phoneNumber}?text=${waText}`;
